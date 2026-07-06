@@ -67,6 +67,23 @@ icons/                      placeholder icons (16/48/128)
   `document.documentElement` whose callback changes the DOM feedback-loops the
   trade site into a freeze. Use bounded polling / self-heal instead.
 
+## Cross-browser (Chrome + Firefox)
+
+One shared `manifest.json` targets both.
+
+- **`world: "MAIN"` content scripts** are the core mechanism and require **Firefox
+  128+** (Chrome 111+). Hence `browser_specific_settings.gecko.strict_min_version:
+  "128.0"`. Chrome ignores `browser_specific_settings` (it just logs a harmless
+  "unrecognized key" warning).
+- **Extension API handle:** `storage.js` uses `const ext = globalThis.browser ||
+  globalThis.chrome`. Both are promise-based under MV3, so `await` works on each.
+  Only `storage.js` touches the API; net-hook (MAIN world) and the UI don't.
+- **Firefox host permissions are optional at install** — the user must grant
+  access to `pathofexile.com` before capture/reload work. Nothing we can set in
+  the manifest changes that.
+- Permanent Firefox installs need Mozilla signing (AMO or `web-ext sign`); not
+  set up yet. `about:debugging` temporary loading works for testing.
+
 ## Decisions locked for this build
 
 - **Vanilla JS, no framework, no bundler.** Keep mechanics visible. Raise a

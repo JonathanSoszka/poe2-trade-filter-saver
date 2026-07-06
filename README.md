@@ -8,19 +8,35 @@ re-typing the same filters every session. This fixes that.
 Everything stays in your own browser. There's no server, no account, and nothing
 gets sent anywhere.
 
-Tested on Chrome, Edge and Brave. Needs Chrome 111 or newer.
+Works on Chrome, Edge and Brave (Chrome 111+), and on Firefox 128+.
 
 ## Installing
 
 It's not on the Web Store, so you load it by hand:
 
-1. Download or clone this repo somewhere.
+1. Grab the latest zip from the
+   [Releases page](https://github.com/JonathanSoszka/poe2-trade-filter-saver/releases/latest)
+   and unzip it. (Or just clone this repo if you'd rather.)
 2. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).
 3. Switch on Developer mode, top-right.
 4. Hit "Load unpacked" and point it at the folder that has `manifest.json` in it.
 
 If you change the code later, click the reload icon on the extension's card and
 refresh the trade page.
+
+### Firefox
+
+Firefox 128 or newer (it relies on a content-script feature added in 128).
+
+1. Go to `about:debugging` → This Firefox → **Load Temporary Add-on**.
+2. Pick the `manifest.json` from the unzipped folder.
+3. Open a trade search page. The first time, Firefox may ask you to allow the
+   extension to access `pathofexile.com` — you have to grant that (Firefox treats
+   site access as optional), otherwise it can't capture or reload searches.
+
+Temporary add-ons are cleared when you restart Firefox, so you'd reload it the
+same way next time. For a permanent install the add-on has to be signed through
+Mozilla, which isn't set up here yet.
 
 ## Using it
 

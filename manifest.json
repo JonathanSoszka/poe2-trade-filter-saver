@@ -5,6 +5,12 @@
   "description": "Save, organize, and reload search filters on the Path of Exile 2 trade site. Local-only, no accounts, no servers.",
   "permissions": ["storage"],
   "host_permissions": ["*://www.pathofexile.com/*"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "poe2-trade-filter-saver@jonathansoszka.github.io",
+      "strict_min_version": "128.0"
+    }
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

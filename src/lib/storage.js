@@ -1,4 +1,4 @@
-// storage.js — thin wrapper over chrome.storage.local for saved filters.
+// storage.js — thin wrapper over extension storage for saved filters.
 //
 // Loaded as a content script (ISOLATED world) BEFORE content.js, so it just
 // exposes a global `PoE2FilterStore`. No bundler / no ES modules by design —
@@ -12,6 +12,10 @@
 (() => {
   "use strict";
 
+  // Cross-browser handle: Firefox exposes `browser` (promise-based), Chrome/Edge
+  // expose `chrome` (also promise-based under MV3). Both work with await.
+  const ext = globalThis.browser || globalThis.chrome;
+
   const KEY = "savedFilters";
 
   // Record shape:
@@ -20,13 +24,13 @@
   // both are needed to faithfully reproduce a search (sort lives outside query).
 
   async function getAll() {
-    const data = await chrome.storage.local.get(KEY);
+    const data = await ext.storage.local.get(KEY);
     const list = data[KEY];
     return Array.isArray(list) ? list : [];
   }
 
   async function setAll(list) {
-    await chrome.storage.local.set({ [KEY]: list });
+    await ext.storage.local.set({ [KEY]: list });
     return list;
   }
 
