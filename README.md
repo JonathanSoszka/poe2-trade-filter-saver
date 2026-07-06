@@ -1,135 +1,94 @@
 # PoE2 Trade Filter Saver
 
-A Chrome extension that adds **save, organize, and reload of search filters** to
-the official [Path of Exile 2 trade site](https://www.pathofexile.com/trade2).
-The trade site has no native "save this search" feature — this adds one that
-lives entirely in your own browser. No servers, no accounts, no analytics,
-nothing leaves your machine.
+Chrome extension that lets you save searches on the [Path of Exile 2 trade
+site](https://www.pathofexile.com/trade2) and pull them back up later. The site
+itself has no way to bookmark a search, which gets annoying fast when you're
+re-typing the same filters every session. This fixes that.
 
-Works on Chrome 111+, Edge, and Brave.
+Everything stays in your own browser. There's no server, no account, and nothing
+gets sent anywhere.
 
-> **Status: feature-complete (all 6 milestones).** Save, list, one-click reload,
-> rename/note/delete, and JSON export/import all work from an on-page toolbar and
-> side drawer — no DevTools needed for normal use.
+Tested on Chrome, Edge and Brave. Needs Chrome 111 or newer.
 
----
+## Installing
 
-## Install (load unpacked)
+It's not on the Web Store, so you load it by hand:
 
-The extension isn't on the Chrome Web Store — you load it directly from this
-folder:
+1. Download or clone this repo somewhere.
+2. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).
+3. Switch on Developer mode, top-right.
+4. Hit "Load unpacked" and point it at the folder that has `manifest.json` in it.
 
-1. Download / clone this repository to a folder on your computer.
-2. Open your browser's extensions page:
-   - Chrome: `chrome://extensions`
-   - Edge: `edge://extensions`
-   - Brave: `brave://extensions`
-3. Turn on **Developer mode** (toggle in the top-right corner).
-4. Click **Load unpacked** and select this repository's root folder — the one
-   that contains `manifest.json`.
-5. The extension card appears. You're done.
+If you change the code later, click the reload icon on the extension's card and
+refresh the trade page.
 
-> After you pull new changes or edit files, click the **reload** ↻ icon on the
-> extension's card, then refresh the trade page.
+## Using it
 
----
-
-## How to use it
-
-### 1. Open a trade search page
-
-Go to a PoE2 trade search for your league, for example:
+Open a trade search for your league, e.g.
 
 ```
 https://www.pathofexile.com/trade2/search/poe2/Runes%20of%20Aldur
 ```
 
-The extension only activates on `.../trade2/search/poe2/...` pages. It reads the
-league from the page URL, so it works for **any** league automatically — nothing
-is hardcoded.
+It only runs on `trade2/search` pages and figures out the league from the URL,
+so it isn't tied to any particular league.
 
-### 2. Build and run a search
+Set up a search the normal way and run it. A little toolbar sits in the
+bottom-right corner with two buttons:
 
-Use the trade site exactly as you normally would: set your filters, stats,
-price, sort order, and hit **Search**. The extension quietly captures the filter
-behind that search.
+- **Save filter** stays greyed out until you've actually run a search. Click it
+  and you get a dialog: type a name to save it as a new filter, or pick an
+  existing one from the "Overwrite existing" dropdown to replace it with whatever
+  you've got on screen now.
+- **Saved (N)** opens the drawer with everything you've saved.
 
-### 3. Save it
+In the drawer, each saved search has a Reload button in its corner. Reload just
+re-runs the search and drops you on fresh results. It stores the whole query
+rather than the search link, so it still works after the original link has
+expired (which they do, server-side, after a while). Anything you saved under a
+different league gets tagged so you know reloading it will jump leagues.
 
-A small toolbar floats at the bottom-right of the page with two buttons:
+There's a pencil next to each name for renaming, a Delete button, and a
+collapsible "Filter details" section if you want to see what's actually in a
+saved search (category, price, stat filters, sort, and the raw JSON).
 
-- **💾 Save filter** — stores the search you just ran. It's disabled until
-  you've run a search. Clicking it opens a small dialog where you can either
-  **give the filter a name** to save it as new, or pick an existing filter from
-  the **"Overwrite existing"** dropdown to replace it with the current search
-  (keeping that filter's name and note).
-- **📁 Saved (N)** — opens the drawer of everything you've saved.
+## Backups
 
-### 4. Reload a saved filter
+The bottom of the drawer has Export and Import. Export dumps everything to a
+`poe2-filters-YYYY-MM-DD.json` file. Import merges a file back in without
+touching what you already have. Anything it's already got (matched by id) is
+skipped, and it'll tell you how many it added versus skipped. Handy for moving
+your filters to another machine.
 
-Click **📁 Saved** to slide out the drawer. Each saved filter shows its name,
-league, and when you saved it. Click **Reload** and the extension re-runs that
-search and drops you on a fresh result page — **even if the original search link
-has expired**, because it stores the full filter, not just the (expirable) link.
+## About privacy / GGG's rules
 
-Filters saved in a different league show an "other league" badge; reloading one
-takes you to that league's search.
+Filters live in `chrome.storage.local`, so they're just on your machine. No
+tracking, no external calls.
 
-### 5. Organize them
+Reloading a search uses the session you're already logged into (the normal
+same-origin cookies), the same as if you'd clicked a link. It doesn't read or
+send your login anywhere.
 
-In the drawer, each filter also has:
-
-- **Rename** — change its name.
-- **Add note / Edit note** — jot a reminder (e.g. "leveling weapon under 50c").
-- **Delete** — remove it (asks for confirmation).
-
-### 6. Back up / move to another machine
-
-At the bottom of the drawer:
-
-- **⬇ Export** — downloads all your filters as a `poe2-filters-YYYY-MM-DD.json`
-  file.
-- **⬆ Import** — merges filters from an exported file. Import is
-  **non-destructive**: it never deletes or overwrites what you already have;
-  filters already present (same id) are skipped, and it tells you how many were
-  added vs. skipped.
-
----
-
-## Privacy & fair use
-
-- **Everything is local.** Filters are stored with your browser
-  (`chrome.storage.local`). No external servers, accounts, or tracking.
-- **No credentials are touched.** Reloading a saved search reuses your browser's
-  existing logged-in session (same-origin cookies), exactly as clicking a link
-  would. The extension never reads, stores, or transmits your login.
-- **Manual only, by design.** It captures and replays *only the searches you run
-  yourself*. There is no background polling, no timers, no auto-refresh, and no
-  automation — every action is a single click you initiate. This keeps it within
-  Grinding Gear Games' terms, which don't sanction automated use of the trade
-  endpoints.
-
----
+It only ever replays searches you ran yourself, one click at a time. No polling,
+no timers, nothing running in the background. That's deliberate, since GGG's
+terms don't allow automated hammering of the trade endpoints, and this stays
+well clear of that.
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|---|---|
-| No `[PoE2 Filter Saver]` logs in the console | Make sure you're on a `.../trade2/search/poe2/...` URL, and that the extension is enabled. Reload the page. |
-| Logs stopped after editing files | Click **reload** ↻ on the extension card in the extensions page, then refresh the trade page. |
-| Nothing logged when you search | Confirm the search actually fired a request (results changed). Only the search **POST** is captured, not opening an existing search link. |
-| Extension won't load | Ensure you selected the folder containing `manifest.json` (the repo root), not a subfolder. |
+- Toolbar not showing up? Make sure you're on a `trade2/search/poe2/...` page and
+  that the extension is enabled, then refresh.
+- Changed the code and nothing's different? Reload the extension from
+  `chrome://extensions` first, then refresh the page.
+- Won't load at all? You probably picked a subfolder. Point "Load unpacked" at
+  the folder with `manifest.json` in it.
+
+## Permissions
+
+It asks for `storage` (to keep your saved filters) and access to
+`www.pathofexile.com` (to run on the trade pages and re-run searches). Nothing
+else.
 
 ---
 
-## Permissions this extension asks for
-
-- **`storage`** — to save your filters locally.
-- **Access to `www.pathofexile.com`** — to run on the trade pages and re-run
-  saved searches.
-
-That's it. No broad web access, no `webRequest`, nothing beyond what's needed.
-
----
-
-For project conventions and development notes, see [AGENTS.md](AGENTS.md).
+See [AGENTS.md](AGENTS.md) if you want the developer notes.
