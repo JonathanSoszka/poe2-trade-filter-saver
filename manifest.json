@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "PoE2 Trade Filter Saver",
+  "version": "0.1.0",
+  "description": "Save, organize, and reload search filters on the Path of Exile 2 trade site. Local-only, no accounts, no servers.",
+  "permissions": ["storage"],
+  "host_permissions": ["*://www.pathofexile.com/*"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.pathofexile.com/trade2/search/poe2/*"],
+      "js": ["src/inject/net-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["*://www.pathofexile.com/trade2/search/poe2/*"],
+      "js": ["src/lib/storage.js", "src/ui/drawer.js", "src/content/content.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# Build / packaging output (store-submission zips, etc.)
+dist/
+*.zip
+*.crx
+*.pem
+
+# Node (only if a build step is ever added)
+node_modules/
+npm-debug.log*
